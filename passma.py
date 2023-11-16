@@ -40,13 +40,29 @@ def addToList(passwordStr):
         f.write("\n")
         f.write(passwordStr)
         f.write("\n")
+        f.write("\n")
     print("Added to password list!")
 
 def listPass():
     if(os.path.isfile(passlist) == False):
         createNewList()
     else:
-        print("Coming soon :3")
+        input2 = input("What account are you looking for? Enter the website")
+        found = False
+        with open('passmaStorage.txt','r') as passlist:
+            lines=passlist.readlines()
+            for x in range(len(passlist.readlines())):
+                if str.lines[x] == input2:
+                    found = True
+                    print("Info for ", input2)
+                    print("Username: ", lines[x + 1])
+                    print("Password: ", lines[x + 2])
+                    raise SystemExit
+                if found == False:
+                    retryInput = input("Account not found. Search again? (y/n)")
+                    
+            
+                
     
 def createNewList(passwordStr):
     noFileInput = input("No password list found. Would you like to create one? (y/n) ")
@@ -63,11 +79,12 @@ def createNewList(passwordStr):
             createNewList(passwordStr)
     if input1 == 'List':
         if noFileInput == 'y':
-            # Create list
+            # 
             print("Password List created. Add some passwords to list them!")
             raise SystemExit
         elif noFileInput == 'n':
-            print("Absolutely nothing has been done! Exiting...")
+            print("Absolutely nothing has been done! Why did you even run this?")
+            print("Exiting...")
             raise SystemExit
 
 input1 = start(input)
