@@ -1,6 +1,5 @@
 import sys
 import random
-import hashlib
 import os.path
 
 
@@ -9,7 +8,7 @@ passlist = './passmaStorage.txt'
 passwordStr = ""
 
 def start(startInput):
-    input1 = input("Enter Gen to make a new password or List to see a saved password. ")
+    input1 = input("Enter gen to make a new password or list to see a saved password. ")
     return input1
 
 
@@ -33,67 +32,91 @@ def genPass():
 def addToList(passwordStr):
     loginInfo = input("Enter what website the password will be used for: ")
     usernameInfo = input("Enter your username or email for this login: ")
-    with open("passmaStorage.txt", "a") as f:
-        f.write(loginInfo)
-        f.write("\n")
-        f.write(usernameInfo)
-        f.write("\n")
-        f.write(passwordStr)
-        f.write("\n")
-        f.write("\n")
+
+    with open("passmaStorage.txt", "a") as passlist:
+        passlist.write("\n")
+        passlist.write(loginInfo)
+        passlist.write("\n")
+        passlist.write(usernameInfo)
+        passlist.write("\n")
+        passlist.write(passwordStr)
+        passlist.write("\n")
+        passlist.write("\n")
     print("Added to password list!")
 
-def listPass():
+def listPass(passlist):
     if(os.path.isfile(passlist) == False):
         createNewList()
     else:
-        input2 = input("What account are you looking for? Enter the website")
-        found = False
-        with open('passmaStorage.txt','r') as passlist:
-            lines=passlist.readlines()
-            for x in range(len(passlist.readlines())):
-                if str.lines[x] == input2:
-                    found = True
-                    print("Info for ", input2)
-                    print("Username: ", lines[x + 1])
-                    print("Password: ", lines[x + 2])
-                    raise SystemExit
-                if found == False:
-                    retryInput = input("Account not found. Search again? (y/n)")
-                    
-            
-                
-    
-def createNewList(passwordStr):
-    noFileInput = input("No password list found. Would you like to create one? (y/n) ")
-    if input1 == 'Gen':
-        if noFileInput == 'y':
-            f = open("passmaStorage.txt", "w")
-            f.close()
-            addToList(passwordStr)
-        elif noFileInput == 'n':
-            print("Password not saved. Exiting...")
-            raise SystemExit
+        passwordCheck = input("Enter your master password: ")
+        f = open(passlist, "r")
+        if (f.readline() == "passmanuts" + passwordCheck):
+            print("Password accepted!")
+            input2 = input("What account are you looking for? Enter the website: ")
+            found = False
+            infoPart = 0
+            print(input2)
+            with open('passmaStorage.txt','r') as passlist:
+                for line in passlist:
+                    line = line.replace('\n','')
+                    if found == True:
+                        if infoPart == 1:
+                            print("Email/Username: " + line)
+                        if infoPart == 2:
+                            print("Password: " + line)
+                            raise SystemExit
+                        infoPart = 2
+                    if line == input2:
+                        print("Account info for " + input2 + ":")
+                        found = True
+                        infoPart = 1
+                failInput = ''
+                while failInput != 'y':
+                    while failInput != 'n':
+                        failInput = input("Account not found. Would you like to retry? (y/n) ")
+                        if failInput == 'y':
+                            listPass('./passmaStorage.txt')
+                        if failInput == 'n':
+                            print("Failed to find account. Exiting...")
+                            raise SystemExit
         else:
-            print("Invalid response")
-            createNewList(passwordStr)
-    if input1 == 'List':
-        if noFileInput == 'y':
-            # 
-            print("Password List created. Add some passwords to list them!")
-            raise SystemExit
-        elif noFileInput == 'n':
-            print("Absolutely nothing has been done! Why did you even run this?")
-            print("Exiting...")
-            raise SystemExit
+            print("Incorrect password!")
+            listPass(passlist)
+                        
+                    
+        
+    def createNewList(passwordStr):
+        noFileInput = input("No password list found. Would you like to create one? (y/n) ")
+        if input1 == 'Gen':
+            if noFileInput == 'y':
+                masterPass = input("What do you want your master password to be? Be sure not to lose this!!! ")
+                f = open("passmaStorage.txt", "w")
+                f.write("passmanuts" + masterPass)
+                f.close()
+                if not (passwordStr == "ignore"):
+                    addToList(passwordStr)
+            elif noFileInput == 'n':
+                print("Password not saved. Exiting...")
+                raise SystemExit
+            else:
+                print("Invalid response")
+                createNewList(passwordStr)
+        if input1 == 'List':
+            if noFileInput == 'y':
+                print("Password List created. Add some passwords to list them!")
+                raise SystemExit
+            elif noFileInput == 'n':
+                print("Absolutely nothing has been done! Why did you even run this..?")
+                print("Exiting...")
+                raise SystemExit
 
 input1 = start(input)
 
-if input1 == 'Gen':
+if input1 == 'gen':
     genPass()
-elif input1 == 'List':
-    listPass()
+elif input1 == 'list':
+    listPass(passlist)
 else:
-    "Invalid Response"
-
+    print("Invalid Response. Exiting...")
+    raise SystemExit
 
