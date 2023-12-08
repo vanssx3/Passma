@@ -46,7 +46,7 @@ def addToList(passwordStr):
 
 def listPass(passlist):
     if(os.path.isfile(passlist) == False):
-        createNewList()
+        createNewList("none")
     else:
         passwordCheck = input("Enter your master password: ")
         f = open(passlist, "r")
@@ -85,30 +85,25 @@ def listPass(passlist):
                         
                     
         
-    def createNewList(passwordStr):
-        noFileInput = input("No password list found. Would you like to create one? (y/n) ")
-        if input1 == 'Gen':
-            if noFileInput == 'y':
-                masterPass = input("What do you want your master password to be? Be sure not to lose this!!! ")
-                f = open("passmaStorage.txt", "w")
-                f.write("passmanuts" + masterPass)
-                f.close()
-                if not (passwordStr == "ignore"):
-                    addToList(passwordStr)
-            elif noFileInput == 'n':
-                print("Password not saved. Exiting...")
-                raise SystemExit
-            else:
-                print("Invalid response")
-                createNewList(passwordStr)
-        if input1 == 'List':
-            if noFileInput == 'y':
-                print("Password List created. Add some passwords to list them!")
-                raise SystemExit
-            elif noFileInput == 'n':
-                print("Absolutely nothing has been done! Why did you even run this..?")
-                print("Exiting...")
-                raise SystemExit
+def createNewList(passwordStr):
+    noFileInput = input("No password list found. Would you like to create one? (y/n) ")
+    if noFileInput == 'y':
+        masterPass = input("What do you want your master password to be? Be sure not to lose this!!! ")
+        f = open("passmaStorage.txt", "w")
+        f.write("passmanuts" + masterPass)
+        f.close()
+        print("Password list created!")
+        if not (passwordStr == "none"):
+            addToList(passwordStr)
+            print("Password added to list.")
+        print("Exiting...")
+        raise SystemExit    
+    elif noFileInput == 'n':
+        print("List not created. Exiting...")
+        raise SystemExit
+    else:
+        print("Invalid response")
+        createNewList(passwordStr)
 
 input1 = start(input)
 
