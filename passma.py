@@ -26,10 +26,19 @@ def genPass():
         if(os.path.isfile(passlist) == False):
             createNewList(passwordStr)
         else:
-            addToList(passwordStr)
+            found = False
+            while found == False:
+                passwordCheck = input("Enter your master password: ")
+                masterLine = linecache.getline(passlist, 1)
+                if (masterLine.strip() == "passmanuts" + passwordCheck):
+                    found = True
+                    print("Password accepted!")
+                    addToList(passwordStr, passwordCheck)
+                else:
+                    print("Incorrect Password!")
             
 
-def addToList(passwordStr):
+def addToList(passwordStr, passwordCheck):
     loginInfo = input("Enter what website the password will be used for: ")
     usernameInfo = input("Enter your username or email for this login: ")
 
@@ -39,7 +48,7 @@ def addToList(passwordStr):
         passlist.write("\n")
         passlist.write(usernameInfo)
         passlist.write("\n")
-        passlist.write(passwordStr)
+        passlist.write(passwordStr + passwordCheck)
         passlist.write("\n")
         passlist.write("\n")
     print("Added to password list!")
@@ -63,7 +72,7 @@ def listPass(passlist):
                         if infoPart == 1:
                             print("Email/Username: " + line)
                         if infoPart == 2:
-                            print("Password: " + line)
+                            print("Password: " + line.removesuffix(passwordCheck))
                             raise SystemExit
                         infoPart = 2
                     if line == input2:
@@ -94,7 +103,7 @@ def createNewList(passwordStr):
         f.close()
         print("Password list created!")
         if not (passwordStr == "none"):
-            addToList(passwordStr)
+            addToList(passwordStr, masterPass)
             print("Password added to list.")
         print("Exiting...")
         raise SystemExit    
