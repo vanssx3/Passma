@@ -50,7 +50,10 @@ def listPass(passlist):
     else:
         passwordCheck = input("Enter your master password: ")
         f = open(passlist, "r")
-        if (f.readline() == "passmanuts" + passwordCheck):
+        passwordnuts = (f.readline(1) + passwordCheck)
+        print(passwordnuts)
+        print(f.readline(1))
+        if (f.readline(1) == "passmanuts" + passwordCheck):
             print("Password accepted!")
             input2 = input("What account are you looking for? Enter the website: ")
             found = False
