@@ -1,7 +1,7 @@
 import sys
 import random
 import os.path
-
+import linecache
 
 allChars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&'
 passlist = './passmaStorage.txt'
@@ -49,11 +49,8 @@ def listPass(passlist):
         createNewList("none")
     else:
         passwordCheck = input("Enter your master password: ")
-        f = open(passlist, "r")
-        passwordnuts = (f.readline(1) + passwordCheck)
-        print(passwordnuts)
-        print(f.readline(1))
-        if (f.readline(1) == "passmanuts" + passwordCheck):
+        masterLine = linecache.getline(passlist, 1)
+        if (masterLine.strip() == "passmanuts" + passwordCheck):
             print("Password accepted!")
             input2 = input("What account are you looking for? Enter the website: ")
             found = False
@@ -117,4 +114,3 @@ elif input1 == 'list':
 else:
     print("Invalid Response. Exiting...")
     raise SystemExit
-
