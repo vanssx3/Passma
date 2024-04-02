@@ -1,11 +1,12 @@
 # Passma - Python Password Manager Program!
 (Don't ask what the name means...)
-!!Not recommended for normal use!!
+
+!!NOT RECOMMENDED FOR NORMAL USE!! Made as a proof of concept, passwords are NOT stored in a secure format.
 
 This program can be used to store account passwords and generate new, secure passwords! Passwords are stored and salted in a text file that can be retrieved with the program as well.
 
 # Dependencies
-In order for Passma to function, you must have Python3 installed and the bcrypt module!
+In order for Passma to function, you must have Python3 installed!
 
 # To install Python3:
 
